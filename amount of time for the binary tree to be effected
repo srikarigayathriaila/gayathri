@@ -1,0 +1,55 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from collections import deque
+class Solution(object):
+    def amountOfTime(self, root, start):
+        def get_parent_address(root):
+            mpp = {}
+            q = deque([root])
+            while q:
+                node = q.popleft()
+                if node.left:
+                    mpp[node.left] = node
+                    q.append(node.left)
+                if node.right:
+                    mpp[node.right] = node
+                    q.append(node.right)
+            return mpp
+        def inorder(root, start):
+            if not root:
+                return None
+            if root.val == start:
+                return root
+            left = inorder(root.left, start)
+            if left:
+                return left
+            return inorder(root.right, start)
+        d = get_parent_address(root)
+        startNode = inorder(root, start)
+        time = 0
+        visited = set([startNode])
+        que = deque([startNode])
+        while que:
+            level_size = len(que)
+            spread = False
+            for _ in range(level_size):
+                node = que.popleft()
+                if node in d and d[node] not in visited:
+                    visited.add(d[node])
+                    que.append(d[node])
+                    spread = True
+                if node.left and node.left not in visited:
+                    visited.add(node.left)
+                    que.append(node.left)
+                    spread = True
+                if node.right and node.right not in visited:
+                    visited.add(node.right)
+                    que.append(node.right)
+                    spread = True
+            if spread:
+                time += 1
+        return time
