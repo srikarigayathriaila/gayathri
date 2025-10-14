@@ -1,0 +1,33 @@
+class Solution:
+    def searchRange(self, arr, target):
+        def lower_bound(nums, target):
+            low, high = 0, len(nums) - 1
+            ans = len(nums)
+            while low <= high:
+                mid = (low + high) // 2
+                if nums[mid] >= target:
+                    ans = mid
+                    high = mid - 1
+                else:
+                    low = mid + 1
+            return ans
+        def upper_bound(nums, target):
+            low, high = 0, len(nums) - 1
+            ans = len(nums)
+            while low <= high:
+                mid = (low + high) // 2
+                if nums[mid] > target:
+                    ans = mid
+                    high = mid - 1
+                else:
+                    low = mid + 1
+            return ans
+        # Edge case: empty array
+        if len(arr) == 0:
+            return [-1, -1]
+        first = lower_bound(arr, target)
+        last = upper_bound(arr, target) - 1
+        # Check if target actually exists
+        if first == len(arr) or arr[first] != target:
+            return [-1, -1]
+        return [first, last]
