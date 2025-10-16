@@ -1,0 +1,13 @@
+class Solution:
+    def findSmallestInteger(self, nums, value):
+        from collections import Counter
+        # Count remainders modulo 'value'
+        cnt = Counter((x % value + value) % value for x in nums)
+        mex = 0
+        while True:
+            rem = mex % value
+            if cnt[rem] > 0:
+                cnt[rem] -= 1
+                mex += 1
+            else:
+                return mex
