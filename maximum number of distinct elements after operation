@@ -1,0 +1,12 @@
+class Solution:
+    def maxDistinctElements(self, nums, k):
+        nums.sort()
+        prev = -10**18
+        count = 0
+        for num in nums:
+            # choose the smallest possible value > prev and within [num - k, num + k]
+            new_val = max(prev + 1, num - k)
+            if new_val <= num + k:
+                count += 1
+                prev = new_val  # update last used value
+        return count
