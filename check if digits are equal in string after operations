@@ -1,0 +1,12 @@
+class Solution:
+    def hasSameDigits(self, s):
+        # Keep reducing until the string has only two digits
+        while len(s) > 2:
+            new_s = []
+            for i in range(len(s) - 1):
+                val = (int(s[i]) + int(s[i + 1])) % 10
+                new_s.append(str(val))
+            s = ''.join(new_s)
+        
+        # Return True if both digits are the same
+        return s[0] == s[1]
